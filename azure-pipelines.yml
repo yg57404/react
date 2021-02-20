@@ -22,7 +22,7 @@ steps:
 - task: AzureFileCopy@3
   inputs:
     SourcePath: '$(System.DefaultWorkingDirectory)/dist'
-    azureSubscription: '[my subscription details]'
+    azureSubscription: '1f85607e-cdfd-4c22-a61f-4602e22fcf4a'
     Destination: 'AzureBlob'
-    storage: 'mystorageaccountname'
+    storage: 'acc07'
     ContainerName: '$web'

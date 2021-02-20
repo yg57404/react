@@ -1,10 +1,28 @@
-trigger:
-  - master
-stages:
-  - stage: Build
-    displayName: Build
-    jobs:  
-    - job: Build_Prod
-      displayName: Build
-      steps:
-      - template: templates/build-template.yml
+pool:
+  vmImage: 'vs2017-win2016'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '10.x'
+  displayName: 'Install Node.js'
+
+- script: |
+    npm install
+  displayName: 'npm install'
+
+- script: |
+    npm run build
+  displayName: 'npm run build'
+
+- script: |
+    dir
+  displayName: 'list cwd contents (verify build)'
+
+- task: AzureFileCopy@3
+  inputs:
+    SourcePath: '$(System.DefaultWorkingDirectory)/dist'
+    azureSubscription: '[my subscription details]'
+    Destination: 'AzureBlob'
+    storage: 'mystorageaccountname'
+    ContainerName: '$web'
